@@ -33,16 +33,19 @@ export class Output {
     return this;
   }
 
-  public static parse(data: any): string | Buffer | Uint8Array {
-    switch (data.constructor) {
-      case Buffer:
-      case String:
-      case Uint8Array:
-        return data;
-      case Date:
-        return data.toString();
-      default:
-        return JSON.stringify(data);
+  public static parse(data?: any): string | Buffer | Uint8Array {
+    if (data) {
+      switch (data.constructor) {
+        case String:
+        case Buffer:
+        case Uint8Array:
+          return data;
+        case Date:
+          return data.toString();
+        default:
+          return JSON.stringify(data);
+      }
     }
+    return "";
   }
 }

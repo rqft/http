@@ -13,5 +13,5 @@ export declare class Output {
     send(data: any): ServerResponse;
     get headers(): Collection<string, HeaderValue | undefined>;
     setHeader(key: string, value: HeaderValue): this;
-    static parse(data: any): string | Buffer | Uint8Array;
+    static parse(data?: any): string | Buffer | Uint8Array;
 }

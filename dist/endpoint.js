@@ -11,22 +11,31 @@ class Endpoint {
         this.method = options.method;
         this.handler = options.handler;
     }
-    match(pathname) {
+    params(pathname) {
         const output = new collection_1.Collection();
         const source = this.path.split("/");
         const target = pathname.split("/");
-        if (source.length !== target.length) {
-            return new collection_1.Collection();
-        }
         for (let i = 0; i < source.length; i++) {
-            if (/\{.*\}/g.test(source[i]) || source[i] === "*") {
-                output.set(source[i], target[i]);
+            const named = source[i].match(/^{(\w+)}$/);
+            if (named) {
+                output.set(named[1], target[i] || "");
+            }
+            const existingGlobals = output.filter((_, key) => key.startsWith("*"));
+            if (source[i] === "*") {
+                output.set("*".repeat(existingGlobals.size), target[i] || "");
             }
         }
         return output;
     }
+    match(pathname) {
+        const output = this.params(pathname).clone();
+        return output.size > 0 || this.path === pathname;
+    }
     static parse(path) {
-        const [method, pathname] = path.split(" ");
+        let [method, pathname] = path.split(" ");
+        if (!pathname || !pathname.startsWith("/")) {
+            pathname = "/" + (pathname || "");
+        }
         return { method, pathname };
     }
 }

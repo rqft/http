@@ -27,16 +27,19 @@ class Output {
         return this;
     }
     static parse(data) {
-        switch (data.constructor) {
-            case Buffer:
-            case String:
-            case Uint8Array:
-                return data;
-            case Date:
-                return data.toString();
-            default:
-                return JSON.stringify(data);
+        if (data) {
+            switch (data.constructor) {
+                case String:
+                case Buffer:
+                case Uint8Array:
+                    return data;
+                case Date:
+                    return data.toString();
+                default:
+                    return JSON.stringify(data);
+            }
         }
+        return "";
     }
 }
 exports.Output = Output;

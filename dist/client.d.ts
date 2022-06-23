@@ -9,15 +9,17 @@ export interface ClientOptions {
     port: number;
     host: string;
     server: ServerOptions;
+    capture: EndpointOptions["handler"];
 }
 export declare class Client {
     port: number;
     host: string;
     http: Server;
+    capture?: EndpointOptions["handler"];
     endpoints: Endpoints;
     constructor(options?: Partial<ClientOptions>);
     apply(endpoint: Endpoint): void;
     create(path: EndpointString, handler: EndpointOptions["handler"]): this;
-    listen(): void;
+    listen(callback?: (self: this) => any): void;
     initialize(): void;
 }
