@@ -1,5 +1,5 @@
 {
-  "name": "kevin",
+  "name": "kevin-http",
   "version": "1.0.0",
   "description": "ts server library",
   "main": "dist/index.js",
