@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Output = void 0;
-const collection_1 = require("../../Julian/dist/collection");
+const julian_utils_1 = require("julian-utils");
 class Output {
     static = Output;
     data;
@@ -20,7 +20,7 @@ class Output {
         return this.data.end(this.static.parse(data));
     }
     get headers() {
-        return new collection_1.BaseCollection(Object.entries(this.data.getHeaders()));
+        return new julian_utils_1.BaseCollection(Object.entries(this.data.getHeaders()));
     }
     setHeader(key, value) {
         this.data.setHeader(key, value);

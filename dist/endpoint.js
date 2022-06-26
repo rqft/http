@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Endpoint = void 0;
-const collection_1 = require("../../Julian/dist/collection");
+const julian_utils_1 = require("julian-utils");
 class Endpoint {
     path;
     method;
@@ -12,7 +12,7 @@ class Endpoint {
         this.handler = options.handler;
     }
     params(pathname) {
-        const output = new collection_1.BaseCollection();
+        const output = new julian_utils_1.BaseCollection();
         const source = this.path.split("/");
         const target = pathname.split("/");
         for (let i = 0; i < source.length; i++) {

@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { IncomingMessage } from "http";
-import { BaseCollection as Collection } from "../../Julian/dist/collection";
+import { BaseCollection as Collection } from "julian-utils";
 import { Client } from "./client";
 import { HTTPHeaders, HTTPVerbs } from "./constants";
 import { Endpoint } from "./endpoint";

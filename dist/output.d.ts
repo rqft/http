@@ -1,7 +1,7 @@
 /// <reference types="node" />
 /// <reference types="node" />
 import { ServerResponse } from "http";
-import { BaseCollection as Collection } from "../../Julian/dist/collection";
+import { BaseCollection as Collection } from "julian-utils";
 import { StatusCodes } from "./constants";
 import { HeaderValue } from "./types";
 export declare class Output {

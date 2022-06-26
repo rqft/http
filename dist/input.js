@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Input = void 0;
-const collection_1 = require("../../Julian/dist/collection");
+const julian_utils_1 = require("julian-utils");
 class Input {
     data;
     client;
@@ -19,7 +19,7 @@ class Input {
         return this.bodyParts.join("");
     }
     get headers() {
-        return new collection_1.BaseCollection(Object.entries(this.data.headers));
+        return new julian_utils_1.BaseCollection(Object.entries(this.data.headers));
     }
     get url() {
         return new URL(this.data.url || "/", `http://${this.headers.get("host")}`);
@@ -31,7 +31,7 @@ class Input {
         return this.endpoint.params(this.url.pathname);
     }
     get query() {
-        return new collection_1.BaseCollection(this.url.searchParams);
+        return new julian_utils_1.BaseCollection(this.url.searchParams);
     }
 }
 exports.Input = Input;
