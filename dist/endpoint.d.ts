@@ -1,4 +1,4 @@
-import { Collection } from "../../Julian/dist/collection";
+import { BaseCollection as Collection } from "../../Julian/dist/collection";
 import { Client } from "./client";
 import { HTTPVerbs } from "./constants";
 import { Input } from "./input";
@@ -7,6 +7,7 @@ import { EndpointString } from "./types";
 export interface EndpointOptions {
     method: HTTPVerbs;
     handler: (input: Input, output: Output, endpoint: Endpoint, client: Client) => any;
+    next?: Endpoint;
 }
 export declare class Endpoint {
     path: string;

@@ -19,7 +19,7 @@ class Input {
         return this.bodyParts.join("");
     }
     get headers() {
-        return new collection_1.Collection(Object.entries(this.data.headers));
+        return new collection_1.BaseCollection(Object.entries(this.data.headers));
     }
     get url() {
         return new URL(this.data.url || "/", `http://${this.headers.get("host")}`);
@@ -31,7 +31,7 @@ class Input {
         return this.endpoint.params(this.url.pathname);
     }
     get query() {
-        return new collection_1.Collection(this.url.searchParams);
+        return new collection_1.BaseCollection(this.url.searchParams);
     }
 }
 exports.Input = Input;

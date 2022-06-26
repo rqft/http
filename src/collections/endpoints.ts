@@ -1,4 +1,4 @@
-import { Collection } from "../../../Julian/dist/collection";
+import { BaseCollection as Collection } from "julian-utils";
 import { HTTPVerbs } from "../constants";
 import { Endpoint } from "../endpoint";
 

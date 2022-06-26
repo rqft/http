@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { Collection } from "../../Julian/dist/collection";
+import { BaseCollection as Collection } from "../../Julian/dist/collection";
 import { StatusCodes } from "./constants";
 import { HeaderValue } from "./types";
 

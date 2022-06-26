@@ -1,6 +1,6 @@
 {
   "name": "kevin-http",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ts server library",
   "main": "dist/index.js",
   "scripts": {
@@ -21,5 +21,8 @@
     "@types/node-fetch": "^2.6.2",
     "node-": "file:types/node-fetch@2.5.0",
     "node-fetch": "^2.5.0"
+  },
+  "dependencies": {
+    "julian-utils": "^1.0.1"
   }
 }

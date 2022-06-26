@@ -20,7 +20,7 @@ class Output {
         return this.data.end(this.static.parse(data));
     }
     get headers() {
-        return new collection_1.Collection(Object.entries(this.data.getHeaders()));
+        return new collection_1.BaseCollection(Object.entries(this.data.getHeaders()));
     }
     setHeader(key, value) {
         this.data.setHeader(key, value);

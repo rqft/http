@@ -12,7 +12,7 @@ class Endpoint {
         this.handler = options.handler;
     }
     params(pathname) {
-        const output = new collection_1.Collection();
+        const output = new collection_1.BaseCollection();
         const source = this.path.split("/");
         const target = pathname.split("/");
         for (let i = 0; i < source.length; i++) {

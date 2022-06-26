@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Endpoints = void 0;
-const collection_1 = require("../../../Julian/dist/collection");
+const julian_utils_1 = require("julian-utils");
 const constants_1 = require("../constants");
 class Endpoints {
-    [constants_1.HTTPVerbs.GET] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.POST] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.PUT] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.DELETE] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.PATCH] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.HEAD] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.OPTIONS] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.CONNECT] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.TRACE] = new collection_1.Collection();
-    [constants_1.HTTPVerbs.ALL] = new collection_1.Collection();
+    [constants_1.HTTPVerbs.GET] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.POST] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.PUT] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.DELETE] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.PATCH] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.HEAD] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.OPTIONS] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.CONNECT] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.TRACE] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.ALL] = new julian_utils_1.BaseCollection();
 }
 exports.Endpoints = Endpoints;
