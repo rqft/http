@@ -13,15 +13,22 @@ class Client {
     host;
     http;
     capture;
+    middleware = [];
     endpoints = new endpoints_1.Endpoints();
     constructor(options) {
         this.port = options?.port || 3000;
         this.host = options?.host || "localhost";
         this.http = new http_1.Server(options?.server || {});
         this.capture = options?.capture;
+        this.middleware = options?.middleware || [];
     }
     apply(endpoint) {
         this.endpoints[endpoint.method].set(endpoint.path, endpoint);
+        return this;
+    }
+    use(...middleware) {
+        this.middleware.push(...middleware);
+        return this;
     }
     create(path, handler) {
         const { method, pathname } = endpoint_1.Endpoint.parse(path);
@@ -66,7 +73,19 @@ class Client {
                                         body,
                                     });
                                     const output = new output_1.Output(res);
-                                    return endpoint.handler(input, output, endpoint, this);
+                                    if (this.middleware.length) {
+                                        let index = 0;
+                                        const next = () => {
+                                            if (index < this.middleware.length) {
+                                                index++;
+                                                this.middleware[index](input, output, endpoint, this, next);
+                                            }
+                                            else {
+                                                endpoint.handler(input, output, endpoint, this);
+                                            }
+                                        };
+                                        next();
+                                    }
                                 });
                                 return;
                             }

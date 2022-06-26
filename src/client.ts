@@ -13,6 +13,14 @@ export interface ClientOptions {
   host: string;
   server: ServerOptions;
   capture: EndpointOptions["handler"];
+  middleware: Array<
+    (
+      ...args: [
+        ...Parameters<EndpointOptions["handler"]>,
+        this["middleware"][number]
+      ]
+    ) => any
+  >;
 }
 
 export class Client {
@@ -20,6 +28,7 @@ export class Client {
   public host: string;
   public http: Server;
   public capture?: EndpointOptions["handler"];
+  public middleware: ClientOptions["middleware"] = [];
 
   public endpoints = new Endpoints();
   constructor(options?: Partial<ClientOptions>) {
@@ -27,10 +36,17 @@ export class Client {
     this.host = options?.host || "localhost";
     this.http = new Server(options?.server || {});
     this.capture = options?.capture;
+    this.middleware = options?.middleware || [];
   }
 
   public apply(endpoint: Endpoint) {
     this.endpoints[endpoint.method].set(endpoint.path, endpoint);
+    return this;
+  }
+
+  public use(...middleware: ClientOptions["middleware"]) {
+    this.middleware.push(...middleware);
+    return this;
   }
 
   public create(path: EndpointString, handler: EndpointOptions["handler"]) {
@@ -82,7 +98,24 @@ export class Client {
                     body,
                   });
                   const output = new Output(res);
-                  return endpoint.handler(input, output, endpoint, this);
+                  if (this.middleware.length) {
+                    let index = 0;
+                    const next = () => {
+                      if (index < this.middleware.length) {
+                        index++;
+                        this.middleware[index]!(
+                          input,
+                          output,
+                          endpoint,
+                          this,
+                          next
+                        );
+                      } else {
+                        endpoint.handler(input, output, endpoint, this);
+                      }
+                    };
+                    next();
+                  }
                 });
                 return;
               } else {
