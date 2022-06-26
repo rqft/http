@@ -1,4 +1,4 @@
-import { BaseCollection as Collection } from "../../Julian/dist/collection";
+import { BaseCollection as Collection } from "julian-utils";
 import { Client } from "./client";
 import { HTTPVerbs } from "./constants";
 import { Input } from "./input";

@@ -1,6 +1,7 @@
 export class Chunk {
   public content: Buffer;
   constructor(content: Buffer | any) {
+    // perf improvement
     if (content instanceof Buffer) {
       this.content = content;
     }
