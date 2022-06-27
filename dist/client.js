@@ -8,17 +8,21 @@ const constants_1 = require("./constants");
 const endpoint_1 = require("./endpoint");
 const input_1 = require("./input");
 const output_1 = require("./output");
+const tools_1 = require("./tools");
 class Client {
     port;
     host;
     http;
     capture;
-    middleware = [];
+    middleware;
     endpoints = new endpoints_1.Endpoints();
     constructor(options) {
         this.port = options?.port || 3000;
         this.host = options?.host || "localhost";
-        this.http = new http_1.Server(options?.server || {});
+        this.http =
+            options?.server instanceof http_1.Server
+                ? options.server
+                : new http_1.Server(options?.server || {});
         this.capture = options?.capture;
         this.middleware = options?.middleware || [];
     }
@@ -46,57 +50,54 @@ class Client {
             }
         });
     }
+    capturing = false;
     initialize() {
-        if (this.capture) {
-            this.create("* /", this.capture);
+        (0, tools_1.sleep)(1);
+        if (this.capture && !this.capturing) {
+            this.create("GET /*", this.capture);
         }
         for (const verb in this.endpoints) {
             const endpoints = this.endpoints[verb];
             this.http.on("request", (req, res) => {
-                const path = req.url;
-                if (path) {
-                    const endpoint = endpoints.find((endpoint) => endpoint.match(path));
-                    if (endpoint) {
-                        if (req.method) {
-                            if (endpoint.method === constants_1.HTTPVerbs.ALL ||
-                                endpoint.method === req.method) {
-                                let body = [];
-                                req.on("data", (data) => {
-                                    const chunk = new chunk_1.Chunk(data);
-                                    body.push(chunk.text());
-                                });
-                                req.on("end", () => {
-                                    const input = new input_1.Input({
-                                        client: this,
-                                        data: req,
-                                        endpoint,
-                                        body,
-                                    });
-                                    const output = new output_1.Output(res);
+                let input = new input_1.Input({ client: this, data: req });
+                req.on("data", (data) => {
+                    const chunk = new chunk_1.Chunk(data);
+                    input.bodyParts.push(chunk);
+                });
+                req.on("end", () => {
+                    const output = new output_1.Output(res);
+                    const path = req.url;
+                    if (path) {
+                        const endpoint = endpoints.find((endpoint) => endpoint.match(path));
+                        if (endpoint) {
+                            if (req.method) {
+                                if (endpoint.method === constants_1.HTTPVerbs.ALL ||
+                                    endpoint.method === req.method) {
+                                    input.setEndpoint(endpoint);
                                     if (this.middleware.length) {
                                         let index = 0;
                                         const next = () => {
                                             if (index < this.middleware.length) {
+                                                this.middleware[index](input, output, next, endpoint, this);
                                                 index++;
-                                                this.middleware[index](input, output, endpoint, this, next);
                                             }
                                             else {
                                                 endpoint.handler(input, output, endpoint, this);
+                                                return;
                                             }
                                         };
                                         next();
+                                        return;
                                     }
-                                });
-                                return;
-                            }
-                            else {
-                                res.writeHead(405, {
-                                    "Content-Type": "text/plain",
-                                });
+                                    else {
+                                        endpoint.handler(input, output, endpoint, this);
+                                        return;
+                                    }
+                                }
                             }
                         }
                     }
-                }
+                });
             });
         }
     }

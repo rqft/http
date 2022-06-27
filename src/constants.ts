@@ -80,6 +80,7 @@ export enum ContentTypes {
   APPLICATION_JSON = "application/json",
   APPLICATION_XML = "application/xml",
   APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded",
+  APPLICATION_OCTET_STREAM = "application/octet-stream",
   TEXT_HTML = "text/html",
   TEXT_PLAIN = "text/plain",
   TEXT_CSS = "text/css",

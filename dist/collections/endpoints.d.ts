@@ -12,4 +12,5 @@ export declare class Endpoints {
     [HTTPVerbs.CONNECT]: Collection<string, Endpoint>;
     [HTTPVerbs.TRACE]: Collection<string, Endpoint>;
     [HTTPVerbs.ALL]: Collection<string, Endpoint>;
+    get any(): Collection<string, Endpoint>;
 }

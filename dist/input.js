@@ -27,8 +27,12 @@ class Input {
     get method() {
         return this.data.method;
     }
+    setEndpoint(endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
     get params() {
-        return this.endpoint.params(this.url.pathname);
+        return this.endpoint?.params(this.url.pathname) || new julian_utils_1.BaseCollection();
     }
     get query() {
         return new julian_utils_1.BaseCollection(this.url.searchParams);

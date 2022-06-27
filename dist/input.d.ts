@@ -1,26 +1,28 @@
 /// <reference types="node" />
 import { IncomingMessage } from "http";
 import { BaseCollection as Collection } from "julian-utils";
+import { Chunk } from "./chunk";
 import { Client } from "./client";
 import { HTTPHeaders, HTTPVerbs } from "./constants";
 import { Endpoint } from "./endpoint";
 import { CustomHTTPHeaders, HeaderValue } from "./types";
 export interface InputOptions {
     data: IncomingMessage;
-    endpoint: Endpoint;
+    endpoint?: Endpoint;
     client: Client;
-    body?: Array<string>;
+    body?: Array<Chunk>;
 }
 export declare class Input {
     data: IncomingMessage;
     client: Client;
-    endpoint: Endpoint;
-    bodyParts: Array<string>;
+    endpoint?: Endpoint;
+    bodyParts: Array<Chunk>;
     constructor(data: InputOptions);
     get body(): string;
     get headers(): Collection<HTTPHeaders | CustomHTTPHeaders | `${HTTPHeaders}`, Exclude<HeaderValue, number> | undefined>;
     get url(): URL;
     get method(): HTTPVerbs;
+    setEndpoint(endpoint: Endpoint): this;
     get params(): Collection<string, string>;
     get query(): Collection<string, string>;
 }

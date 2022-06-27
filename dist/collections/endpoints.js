@@ -14,5 +14,18 @@ class Endpoints {
     [constants_1.HTTPVerbs.CONNECT] = new julian_utils_1.BaseCollection();
     [constants_1.HTTPVerbs.TRACE] = new julian_utils_1.BaseCollection();
     [constants_1.HTTPVerbs.ALL] = new julian_utils_1.BaseCollection();
+    get any() {
+        const total = new julian_utils_1.BaseCollection();
+        for (const verb in this) {
+            if (this.hasOwnProperty(verb) &&
+                Object.values(constants_1.HTTPVerbs).includes(verb)) {
+                const verbCollection = this[verb];
+                for (const [key, value] of verbCollection) {
+                    total.set(key, value);
+                }
+            }
+        }
+        return total;
+    }
 }
 exports.Endpoints = Endpoints;

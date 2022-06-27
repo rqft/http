@@ -1,5 +1,6 @@
 import { IncomingMessage } from "http";
 import { BaseCollection as Collection } from "julian-utils";
+import { Chunk } from "./chunk";
 import { Client } from "./client";
 import { HTTPHeaders, HTTPVerbs } from "./constants";
 import { Endpoint } from "./endpoint";
@@ -11,16 +12,16 @@ import {
 
 export interface InputOptions {
   data: IncomingMessage;
-  endpoint: Endpoint;
+  endpoint?: Endpoint;
   client: Client;
-  body?: Array<string>;
+  body?: Array<Chunk>;
 }
 
 export class Input {
   public data: IncomingMessage;
   public client: Client;
-  public endpoint: Endpoint;
-  public bodyParts: Array<string> = [];
+  public endpoint?: Endpoint;
+  public bodyParts: Array<Chunk> = [];
   constructor(data: InputOptions) {
     this.data = data.data;
     this.client = data.client;
@@ -51,8 +52,13 @@ export class Input {
     return this.data.method as HTTPVerbs;
   }
 
+  public setEndpoint(endpoint: Endpoint): this {
+    this.endpoint = endpoint;
+    return this;
+  }
+
   public get params(): Collection<string, string> {
-    return this.endpoint.params(this.url.pathname);
+    return this.endpoint?.params(this.url.pathname) || new Collection();
   }
 
   public get query(): Collection<string, string> {

@@ -84,6 +84,7 @@ var ContentTypes;
     ContentTypes["APPLICATION_JSON"] = "application/json";
     ContentTypes["APPLICATION_XML"] = "application/xml";
     ContentTypes["APPLICATION_FORM_URLENCODED"] = "application/x-www-form-urlencoded";
+    ContentTypes["APPLICATION_OCTET_STREAM"] = "application/octet-stream";
     ContentTypes["TEXT_HTML"] = "text/html";
     ContentTypes["TEXT_PLAIN"] = "text/plain";
     ContentTypes["TEXT_CSS"] = "text/css";

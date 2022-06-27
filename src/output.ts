@@ -1,7 +1,7 @@
 import { ServerResponse } from "http";
 import { BaseCollection as Collection } from "julian-utils";
-import { StatusCodes } from "./constants";
-import { HeaderValue } from "./types";
+import { ContentTypes, StatusCodes } from "./constants";
+import { Headers, HeaderValue } from "./types";
 
 export class Output {
   private static: typeof Output = Output;
@@ -20,15 +20,21 @@ export class Output {
     return this;
   }
 
+  i = 0;
+
   public send(data: any) {
+    if (!this.headers.get("content-type")) {
+      this.setHeader("content-type", this.static.identify(data));
+    }
+    console.log("writing", ++this.i);
     return this.data.end(this.static.parse(data));
   }
 
-  get headers(): Collection<string, HeaderValue | undefined> {
-    return new Collection(Object.entries(this.data.getHeaders()));
+  get headers(): Collection<keyof Headers, HeaderValue | undefined> {
+    return new Collection(Object.entries(this.data.getHeaders()) as never);
   }
 
-  public setHeader(key: string, value: HeaderValue) {
+  public setHeader(key: keyof Headers, value: HeaderValue) {
     this.data.setHeader(key, value);
     return this;
   }
@@ -47,5 +53,19 @@ export class Output {
       }
     }
     return "";
+  }
+
+  public static identify(data: any): ContentTypes {
+    switch (data.constructor) {
+      case String:
+        return ContentTypes.TEXT_PLAIN;
+      case Buffer:
+      case Uint8Array:
+        return ContentTypes.APPLICATION_OCTET_STREAM;
+      case Date:
+        return ContentTypes.TEXT_PLAIN;
+      default:
+        return ContentTypes.APPLICATION_JSON;
+    }
   }
 }
