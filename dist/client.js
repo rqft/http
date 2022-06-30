@@ -50,56 +50,51 @@ class Client {
             }
         });
     }
-    capturing = false;
+    close(callback) {
+        this.http.close(() => {
+            if (callback) {
+                callback(this);
+            }
+        });
+    }
     initialize() {
         (0, tools_1.sleep)(1);
-        if (this.capture && !this.capturing) {
+        if (this.capture) {
             this.create("GET /*", this.capture);
         }
-        for (const verb in this.endpoints) {
-            const endpoints = this.endpoints[verb];
-            this.http.on("request", (req, res) => {
-                let input = new input_1.Input({ client: this, data: req });
-                req.on("data", (data) => {
-                    const chunk = new chunk_1.Chunk(data);
-                    input.bodyParts.push(chunk);
-                });
-                req.on("end", () => {
-                    const output = new output_1.Output(res);
-                    const path = req.url;
-                    if (path) {
-                        const endpoint = endpoints.find((endpoint) => endpoint.match(path));
-                        if (endpoint) {
-                            if (req.method) {
-                                if (endpoint.method === constants_1.HTTPVerbs.ALL ||
-                                    endpoint.method === req.method) {
-                                    input.setEndpoint(endpoint);
-                                    if (this.middleware.length) {
-                                        let index = 0;
-                                        const next = () => {
-                                            if (index < this.middleware.length) {
-                                                this.middleware[index](input, output, next, endpoint, this);
-                                                index++;
-                                            }
-                                            else {
-                                                endpoint.handler(input, output, endpoint, this);
-                                                return;
-                                            }
-                                        };
-                                        next();
-                                        return;
+        const endpoints = this.endpoints.any;
+        this.http.on("request", (req, res) => {
+            let input = new input_1.Input({ client: this, data: req });
+            req.on("data", (data) => {
+                const chunk = new chunk_1.Chunk(data);
+                input.bodyParts.push(chunk);
+            });
+            req.on("end", () => {
+                const output = new output_1.Output(res);
+                const path = req.url;
+                if (path) {
+                    const endpoint = endpoints.find((endpoint) => endpoint.match(path));
+                    if (endpoint) {
+                        if (req.method) {
+                            if (endpoint.method === constants_1.HTTPVerbs.ALL ||
+                                endpoint.method === req.method) {
+                                input.setEndpoint(endpoint);
+                                let i = 0;
+                                const next = () => {
+                                    if (i < this.middleware.length) {
+                                        this.middleware[i++](input, output, next, endpoint, this);
                                     }
                                     else {
                                         endpoint.handler(input, output, endpoint, this);
-                                        return;
                                     }
-                                }
+                                };
+                                next();
                             }
                         }
                     }
-                });
+                }
             });
-        }
+        });
     }
 }
 exports.Client = Client;

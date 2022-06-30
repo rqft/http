@@ -11,3 +11,17 @@ export type Headers = Record<
 export type IncomingHeadersEntries = Array<
   [keyof Headers, Headers[keyof Headers]]
 >;
+
+export type Param<T extends string> =
+  T extends `${HTTPVerbs} /${infer Endpoint}/${infer Rest}`
+    ? [
+        ...(Endpoint extends `{${infer param}}` ? [param] : []),
+        ...Param<`/${Rest}`>
+      ]
+    : [];
+
+export type DictionaryOfParams<T extends string> = {
+  [K in T]: string;
+};
+
+export type C = Param<"GET /{id}/">;

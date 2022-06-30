@@ -13,7 +13,6 @@ export interface EndpointOptions {
     endpoint: Endpoint,
     client: Client
   ) => any;
-  next?: Endpoint;
 }
 
 export class Endpoint {
@@ -53,7 +52,7 @@ export class Endpoint {
     return output.size > 0 || this.path === pathname;
   }
 
-  static parse(path: EndpointString) {
+  static parse<T extends EndpointString>(path: T) {
     let [method, pathname] = path.split(" ") as [HTTPVerbs, string];
     if (!pathname || !pathname.startsWith("/")) {
       pathname = "/" + (pathname || "");

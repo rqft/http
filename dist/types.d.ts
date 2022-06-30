@@ -7,3 +7,11 @@ export declare type IncomingHeadersEntries = Array<[
     keyof Headers,
     Headers[keyof Headers]
 ]>;
+export declare type Param<T extends string> = T extends `${HTTPVerbs} /${infer Endpoint}/${infer Rest}` ? [
+    ...(Endpoint extends `{${infer param}}` ? [param] : []),
+    ...Param<`/${Rest}`>
+] : [];
+export declare type DictionaryOfParams<T extends string> = {
+    [K in T]: string;
+};
+export declare type C = Param<"GET /{id}/">;

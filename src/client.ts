@@ -18,7 +18,7 @@ export interface ClientOptions {
     (
       input: Input,
       output: Output,
-      next: this["middleware"][number] | null,
+      next: () => any,
       endpoint: Endpoint,
       client: Client
     ) => any
@@ -72,67 +72,59 @@ export class Client {
     });
   }
 
-  private capturing = false;
+  public close(callback?: (self: this) => any) {
+    this.http.close(() => {
+      if (callback) {
+        callback(this);
+      }
+    });
+  }
 
   public initialize() {
     sleep(1);
-    if (this.capture && !this.capturing) {
+    if (this.capture) {
       this.create("GET /*", this.capture);
     }
-    for (const verb in this.endpoints) {
-      const endpoints = this.endpoints[verb as HTTPVerbs];
-      this.http.on("request", (req, res) => {
-        let input: Input = new Input({ client: this, data: req });
+    const endpoints = this.endpoints.any;
 
-        req.on("data", (data) => {
-          const chunk = new Chunk(data);
-          input.bodyParts.push(chunk);
-        });
+    this.http.on("request", (req, res) => {
+      let input: Input = new Input({ client: this, data: req });
 
-        req.on("end", () => {
-          const output = new Output(res);
+      req.on("data", (data) => {
+        const chunk = new Chunk(data);
+        input.bodyParts.push(chunk);
+      });
 
-          const path = req.url;
+      req.on("end", () => {
+        const output = new Output(res);
 
-          if (path) {
-            const endpoint = endpoints.find((endpoint) => endpoint.match(path));
+        const path = req.url;
 
-            if (endpoint) {
-              if (req.method) {
-                if (
-                  endpoint.method === HTTPVerbs.ALL ||
-                  endpoint.method === req.method
-                ) {
-                  input.setEndpoint(endpoint);
-                  if (this.middleware.length) {
-                    let index = 0;
-                    const next = () => {
-                      if (index < this.middleware.length) {
-                        this.middleware[index]!(
-                          input,
-                          output,
-                          next,
-                          endpoint,
-                          this
-                        );
-                        index++;
-                      } else {
-                        endpoint.handler(input, output, endpoint, this);
-                        return;
-                      }
-                    };
-                    next();
-                    return;
+        if (path) {
+          const endpoint = endpoints.find((endpoint) => endpoint.match(path));
+
+          if (endpoint) {
+            if (req.method) {
+              if (
+                endpoint.method === HTTPVerbs.ALL ||
+                endpoint.method === req.method
+              ) {
+                input.setEndpoint(endpoint);
+                let i = 0;
+                const next = () => {
+                  if (i < this.middleware.length) {
+                    this.middleware[i++]!(input, output, next, endpoint, this);
                   } else {
                     endpoint.handler(input, output, endpoint, this);
-                    return;
                   }
-                }
+                };
+
+                next();
               }
             }
           }
-        });
+        }
       });
-    }
+    });
   }
 }

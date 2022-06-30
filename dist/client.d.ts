@@ -12,7 +12,7 @@ export interface ClientOptions {
     host: string;
     server: ServerOptions | Server;
     capture: EndpointOptions["handler"];
-    middleware: Array<(input: Input, output: Output, next: this["middleware"][number] | null, endpoint: Endpoint, client: Client) => any>;
+    middleware: Array<(input: Input, output: Output, next: () => any, endpoint: Endpoint, client: Client) => any>;
 }
 export declare class Client {
     port: number;
@@ -26,6 +26,6 @@ export declare class Client {
     use(...middleware: ClientOptions["middleware"]): this;
     create(path: EndpointString, handler: EndpointOptions["handler"]): this;
     listen(callback?: (self: this) => any): void;
-    private capturing;
+    close(callback?: (self: this) => any): void;
     initialize(): void;
 }

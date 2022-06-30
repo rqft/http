@@ -7,7 +7,6 @@ import { EndpointString } from "./types";
 export interface EndpointOptions {
     method: HTTPVerbs;
     handler: (input: Input, output: Output, endpoint: Endpoint, client: Client) => any;
-    next?: Endpoint;
 }
 export declare class Endpoint {
     path: string;
@@ -16,7 +15,7 @@ export declare class Endpoint {
     constructor(path: string, options: EndpointOptions);
     params<Params extends string = string>(pathname: string): Collection<Params, string>;
     match(pathname: string): boolean;
-    static parse(path: EndpointString): {
+    static parse<T extends EndpointString>(path: T): {
         method: HTTPVerbs;
         pathname: string;
     };

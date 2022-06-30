@@ -22,7 +22,6 @@ class Output {
         if (!this.headers.get("content-type")) {
             this.setHeader("content-type", this.static.identify(data));
         }
-        console.log("writing", ++this.i);
         return this.data.end(this.static.parse(data));
     }
     get headers() {
