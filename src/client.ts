@@ -13,13 +13,13 @@ export interface ClientOptions {
   port: number;
   host: string;
   server: ServerOptions | Server;
-  capture: EndpointOptions["handler"];
+  capture: EndpointOptions<string>["handler"];
   middleware: Array<
-    (
-      input: Input,
+    <T extends string = string>(
+      input: Input<T>,
       output: Output,
-      next: () => any,
-      endpoint: Endpoint,
+      next: () => void,
+      endpoint: Endpoint<T>,
       client: Client
     ) => any
   >;
@@ -44,8 +44,8 @@ export class Client {
     this.middleware = options?.middleware || [];
   }
 
-  public apply(endpoint: Endpoint) {
-    this.endpoints[endpoint.method].set(endpoint.path, endpoint);
+  public apply<T extends string>(endpoint: Endpoint<T>) {
+    this.endpoints[endpoint.method].set(endpoint.path, endpoint as any);
     return this;
   }
 
@@ -54,9 +54,12 @@ export class Client {
     return this;
   }
 
-  public create(path: EndpointString, handler: EndpointOptions["handler"]) {
-    const { method, pathname } = Endpoint.parse(path);
-    const endpoint = new Endpoint(pathname, {
+  public create<T extends string>(
+    path: EndpointString<T>,
+    handler: EndpointOptions<T>["handler"]
+  ) {
+    const { method, pathname } = Endpoint.parse(path as any);
+    const endpoint = new Endpoint<T>(pathname as any, {
       method,
       handler,
     });
@@ -83,12 +86,12 @@ export class Client {
   public initialize() {
     sleep(1);
     if (this.capture) {
-      this.create("GET /*", this.capture);
+      this.create("GET /*", this.capture as any);
     }
     const endpoints = this.endpoints.any;
 
     this.http.on("request", (req, res) => {
-      let input: Input = new Input({ client: this, data: req });
+      let input: Input<string> = new Input<string>({ client: this, data: req });
 
       req.on("data", (data) => {
         const chunk = new Chunk(data);

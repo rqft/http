@@ -11,8 +11,8 @@ export interface ClientOptions {
     port: number;
     host: string;
     server: ServerOptions | Server;
-    capture: EndpointOptions["handler"];
-    middleware: Array<(input: Input, output: Output, next: () => any, endpoint: Endpoint, client: Client) => any>;
+    capture: EndpointOptions<string>["handler"];
+    middleware: Array<(<T extends string = string>(input: Input<T>, output: Output, next: () => void, endpoint: Endpoint<T>, client: Client) => any)>;
 }
 export declare class Client {
     port: number;
@@ -22,9 +22,9 @@ export declare class Client {
     middleware: ClientOptions["middleware"];
     endpoints: Endpoints;
     constructor(options?: Partial<ClientOptions>);
-    apply(endpoint: Endpoint): this;
+    apply<T extends string>(endpoint: Endpoint<T>): this;
     use(...middleware: ClientOptions["middleware"]): this;
-    create(path: EndpointString, handler: EndpointOptions["handler"]): this;
+    create<T extends string>(path: EndpointString<T>, handler: EndpointOptions<T>["handler"]): this;
     listen(callback?: (self: this) => any): void;
     close(callback?: (self: this) => any): void;
     initialize(): void;

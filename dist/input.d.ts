@@ -5,24 +5,24 @@ import { Chunk } from "./chunk";
 import { Client } from "./client";
 import { HTTPHeaders, HTTPVerbs } from "./constants";
 import { Endpoint } from "./endpoint";
-import { CustomHTTPHeaders, HeaderValue } from "./types";
-export interface InputOptions {
+import { CustomHTTPHeaders, HeaderValue, UrlParams } from "./types";
+export interface InputOptions<T extends string> {
     data: IncomingMessage;
-    endpoint?: Endpoint;
+    endpoint?: Endpoint<T>;
     client: Client;
     body?: Array<Chunk>;
 }
-export declare class Input {
+export declare class Input<T extends string = string> {
     data: IncomingMessage;
     client: Client;
-    endpoint?: Endpoint;
+    endpoint?: Endpoint<T>;
     bodyParts: Array<Chunk>;
-    constructor(data: InputOptions);
+    constructor(data: InputOptions<T>);
     get body(): string;
     get headers(): Collection<HTTPHeaders | CustomHTTPHeaders | `${HTTPHeaders}`, Exclude<HeaderValue, number> | undefined>;
     get url(): URL;
     get method(): HTTPVerbs;
-    setEndpoint(endpoint: Endpoint): this;
-    get params(): Collection<string, string>;
+    setEndpoint(endpoint: Endpoint<any>): this;
+    get params(): Collection<UrlParams<T>, string>;
     get query(): Collection<string, string>;
 }

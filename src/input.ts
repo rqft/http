@@ -8,21 +8,22 @@ import {
   CustomHTTPHeaders,
   HeaderValue,
   IncomingHeadersEntries,
+  UrlParams,
 } from "./types";
 
-export interface InputOptions {
+export interface InputOptions<T extends string> {
   data: IncomingMessage;
-  endpoint?: Endpoint;
+  endpoint?: Endpoint<T>;
   client: Client;
   body?: Array<Chunk>;
 }
 
-export class Input {
+export class Input<T extends string = string> {
   public data: IncomingMessage;
   public client: Client;
-  public endpoint?: Endpoint;
+  public endpoint?: Endpoint<T>;
   public bodyParts: Array<Chunk> = [];
-  constructor(data: InputOptions) {
+  constructor(data: InputOptions<T>) {
     this.data = data.data;
     this.client = data.client;
     this.endpoint = data.endpoint;
@@ -52,12 +53,12 @@ export class Input {
     return this.data.method as HTTPVerbs;
   }
 
-  public setEndpoint(endpoint: Endpoint): this {
+  public setEndpoint(endpoint: Endpoint<any>): this {
     this.endpoint = endpoint;
     return this;
   }
 
-  public get params(): Collection<string, string> {
+  public get params(): Collection<UrlParams<T>, string> {
     return this.endpoint?.params(this.url.pathname) || new Collection();
   }
 
