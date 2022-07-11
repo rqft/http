@@ -1,5 +1,7 @@
 import { HTTPHeaders, HTTPVerbs } from "./constants";
 
+export type Arguments<T> = T extends (...args: infer U) => any ? U : never;
+
 export type EndpointString<T extends string> = `${HTTPVerbs} ${T}`;
 export type HeaderValue = string | number | Array<string>;
 export type CustomHTTPHeaders = `x-${string}`;
@@ -13,7 +15,7 @@ export type IncomingHeadersEntries = Array<
 >;
 
 type UrlParam<T> = T extends `{${infer P}}` ? P : never;
-type Removal<T extends Array<any>, Z> = T extends [infer U, ...infer Us]
+export type Removal<T extends Array<any>, Z> = T extends [infer U, ...infer Us]
   ? [U] extends [Z]
     ? Removal<Us, Z>
     : [U, ...Removal<Us, Z>]

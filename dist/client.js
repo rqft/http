@@ -27,7 +27,9 @@ class Client {
         this.middleware = options?.middleware || [];
     }
     apply(endpoint) {
+        console.log(endpoint);
         this.endpoints[endpoint.method].set(endpoint.path, endpoint);
+        console.log(this.endpoints[endpoint.method]);
         return this;
     }
     use(...middleware) {
@@ -57,6 +59,25 @@ class Client {
             }
         });
     }
+    buildMethod(method) {
+        return (path, handler) => {
+            this.create(`${method} ${path}`, handler);
+        };
+    }
+    all = this.buildMethod(constants_1.HTTPVerbs.ALL);
+    connect = this.buildMethod(constants_1.HTTPVerbs.CONNECT);
+    delete = this.buildMethod(constants_1.HTTPVerbs.DELETE);
+    get = this.buildMethod(constants_1.HTTPVerbs.GET);
+    head = this.buildMethod(constants_1.HTTPVerbs.HEAD);
+    options = this.buildMethod(constants_1.HTTPVerbs.OPTIONS);
+    patch = this.buildMethod(constants_1.HTTPVerbs.PATCH);
+    post = this.buildMethod(constants_1.HTTPVerbs.POST);
+    put = this.buildMethod(constants_1.HTTPVerbs.PUT);
+    trace = this.buildMethod(constants_1.HTTPVerbs.TRACE);
+    run(listen) {
+        this.initialize();
+        this.listen(listen);
+    }
     initialize() {
         (0, tools_1.sleep)(1);
         if (this.capture) {
@@ -73,12 +94,13 @@ class Client {
                 const output = new output_1.Output(res);
                 const path = req.url;
                 if (path) {
+                    console.log(path);
                     const endpoint = endpoints.find((endpoint) => endpoint.match(path));
                     if (endpoint) {
                         if (req.method) {
                             if (endpoint.method === constants_1.HTTPVerbs.ALL ||
                                 endpoint.method === req.method) {
-                                input.setEndpoint(endpoint);
+                                input.endpoint = endpoint;
                                 let i = 0;
                                 const next = () => {
                                     if (i < this.middleware.length) {

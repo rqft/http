@@ -15,14 +15,13 @@ export interface InputOptions<T extends string> {
 export declare class Input<T extends string = string> {
     data: IncomingMessage;
     client: Client;
-    endpoint?: Endpoint<T>;
+    endpoint: Endpoint<T>;
     bodyParts: Array<Chunk>;
     constructor(data: InputOptions<T>);
     get body(): string;
     get headers(): Collection<HTTPHeaders | CustomHTTPHeaders | `${HTTPHeaders}`, Exclude<HeaderValue, number> | undefined>;
     get url(): URL;
     get method(): HTTPVerbs;
-    setEndpoint(endpoint: Endpoint<any>): this;
     get params(): Collection<UrlParams<T>, string>;
     get query(): Collection<string, string>;
 }

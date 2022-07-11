@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Endpoint = void 0;
 const julian_utils_1 = require("julian-utils");
+const tools_1 = require("./tools");
 class Endpoint {
     path;
     method;
@@ -13,8 +14,10 @@ class Endpoint {
     }
     params(pathname) {
         const output = new julian_utils_1.BaseCollection();
-        const source = this.path.split("/");
-        const target = pathname.split("/");
+        const source = (0, tools_1.clear)(this.path.split("/"), "");
+        console.log("s", source);
+        const target = (0, tools_1.clear)(pathname.split("/"), "");
+        console.log("t", target);
         for (let i = 0; i < source.length; i++) {
             const named = source[i].match(/^{(\w+)}$/);
             if (named) {
@@ -23,6 +26,9 @@ class Endpoint {
             const existingGlobals = output.filter((_, key) => key.startsWith("*"));
             if (source[i] === "*") {
                 output.set("*".repeat(existingGlobals.size), target[i] || "");
+            }
+            if (source[i]?.toLowerCase() === target[i]?.toLowerCase()) {
+                output.set(source[i], target[i] || "");
             }
         }
         return output;

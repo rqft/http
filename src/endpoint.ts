@@ -3,6 +3,7 @@ import { Client } from "./client";
 import { HTTPVerbs } from "./constants";
 import { Input } from "./input";
 import { Output } from "./output";
+import { clear } from "./tools";
 import { EndpointString, UrlParams } from "./types";
 
 export interface EndpointOptions<T extends string> {
@@ -30,8 +31,10 @@ export class Endpoint<T extends string = any> {
 
   public params(pathname: string): Collection<UrlParams<T>[number], string> {
     const output = new Collection<UrlParams<T>[number], string>();
-    const source = this.path.split("/");
-    const target = pathname.split("/");
+    const source: Array<string> = clear(this.path.split("/"), "");
+    console.log("s", source);
+    const target: Array<string> = clear(pathname.split("/"), "");
+    console.log("t", target);
 
     for (let i = 0; i < source.length; i++) {
       const named = source[i]!.match(/^{(\w+)}$/);
@@ -44,6 +47,10 @@ export class Endpoint<T extends string = any> {
       );
       if (source[i] === "*") {
         output.set("*".repeat(existingGlobals.size) as any, target[i] || "");
+      }
+
+      if (source[i]?.toLowerCase() === target[i]?.toLowerCase()) {
+        output.set(source[i] as any, target[i] || "");
       }
     }
 

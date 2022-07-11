@@ -7,7 +7,7 @@ import { Endpoint, EndpointOptions } from "./endpoint";
 import { Input } from "./input";
 import { Output } from "./output";
 import { sleep } from "./tools";
-import { EndpointString } from "./types";
+import { Arguments, EndpointString } from "./types";
 
 export interface ClientOptions {
   port: number;
@@ -45,7 +45,9 @@ export class Client {
   }
 
   public apply<T extends string>(endpoint: Endpoint<T>) {
+    console.log(endpoint);
     this.endpoints[endpoint.method].set(endpoint.path, endpoint as any);
+    console.log(this.endpoints[endpoint.method]);
     return this;
   }
 
@@ -83,6 +85,32 @@ export class Client {
     });
   }
 
+  private buildMethod(method: HTTPVerbs) {
+    return <T extends string>(
+      path: T,
+      handler: EndpointOptions<T>["handler"]
+    ) => {
+      this.create(`${method} ${path}`, handler);
+    };
+  }
+
+  public all = this.buildMethod(HTTPVerbs.ALL);
+  public connect = this.buildMethod(HTTPVerbs.CONNECT);
+  public delete = this.buildMethod(HTTPVerbs.DELETE);
+  public get = this.buildMethod(HTTPVerbs.GET);
+  public head = this.buildMethod(HTTPVerbs.HEAD);
+  public options = this.buildMethod(HTTPVerbs.OPTIONS);
+  public patch = this.buildMethod(HTTPVerbs.PATCH);
+  public post = this.buildMethod(HTTPVerbs.POST);
+  public put = this.buildMethod(HTTPVerbs.PUT);
+  public trace = this.buildMethod(HTTPVerbs.TRACE);
+
+  public run(listen?: Arguments<this["listen"]>[0]) {
+    this.initialize();
+    this.listen(listen);
+  }
+
+  // all the important code is here
   public initialize() {
     sleep(1);
     if (this.capture) {
@@ -104,6 +132,7 @@ export class Client {
         const path = req.url;
 
         if (path) {
+          console.log(path);
           const endpoint = endpoints.find((endpoint) => endpoint.match(path));
 
           if (endpoint) {
@@ -112,7 +141,7 @@ export class Client {
                 endpoint.method === HTTPVerbs.ALL ||
                 endpoint.method === req.method
               ) {
-                input.setEndpoint(endpoint);
+                input.endpoint = endpoint;
                 let i = 0;
                 const next = () => {
                   if (i < this.middleware.length) {

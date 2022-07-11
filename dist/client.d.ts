@@ -6,7 +6,7 @@ import { Endpoints } from "./collections/endpoints";
 import { Endpoint, EndpointOptions } from "./endpoint";
 import { Input } from "./input";
 import { Output } from "./output";
-import { EndpointString } from "./types";
+import { Arguments, EndpointString } from "./types";
 export interface ClientOptions {
     port: number;
     host: string;
@@ -27,5 +27,17 @@ export declare class Client {
     create<T extends string>(path: EndpointString<T>, handler: EndpointOptions<T>["handler"]): this;
     listen(callback?: (self: this) => any): void;
     close(callback?: (self: this) => any): void;
+    private buildMethod;
+    all: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    connect: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    delete: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    get: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    head: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    options: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    patch: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    post: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    put: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    trace: <T extends string>(path: T, handler: (input: Input<T>, output: Output, endpoint: Endpoint<T>, client: Client) => any) => void;
+    run(listen?: Arguments<this["listen"]>[0]): void;
     initialize(): void;
 }

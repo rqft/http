@@ -21,12 +21,12 @@ export interface InputOptions<T extends string> {
 export class Input<T extends string = string> {
   public data: IncomingMessage;
   public client: Client;
-  public endpoint?: Endpoint<T>;
+  public endpoint!: Endpoint<T>;
   public bodyParts: Array<Chunk> = [];
   constructor(data: InputOptions<T>) {
     this.data = data.data;
     this.client = data.client;
-    this.endpoint = data.endpoint;
+    this.endpoint = data.endpoint!;
     if (data.body) {
       this.bodyParts = data.body;
     }
@@ -51,11 +51,6 @@ export class Input<T extends string = string> {
 
   public get method(): HTTPVerbs {
     return this.data.method as HTTPVerbs;
-  }
-
-  public setEndpoint(endpoint: Endpoint<any>): this {
-    this.endpoint = endpoint;
-    return this;
   }
 
   public get params(): Collection<UrlParams<T>, string> {
