@@ -15,10 +15,8 @@ class Endpoint {
     params(pathname) {
         const output = new julian_utils_1.BaseCollection();
         const source = (0, tools_1.clear)(this.path.split("/"), "");
-        console.log("s", source);
         const target = (0, tools_1.clear)(pathname.split("/"), "");
-        console.log("t", target);
-        if (source.length !== target.length) {
+        if (source.length < target.length) {
             return output;
         }
         for (let i = 0; i < source.length; i++) {
@@ -36,7 +34,7 @@ class Endpoint {
                 output.set(times + "*", target[i] || "");
                 continue;
             }
-            return new julian_utils_1.BaseCollection();
+            break;
         }
         return output;
     }

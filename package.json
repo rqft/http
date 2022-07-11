@@ -1,6 +1,6 @@
 {
   "name": "kevin-http",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "ts server library",
   "main": "dist/index.js",
   "scripts": {

@@ -129,7 +129,7 @@ export class Client {
       req.on("end", () => {
         const output = new Output(res);
 
-        const path = req.url;
+        const path = input.url.pathname;
 
         if (path) {
           console.log(path);

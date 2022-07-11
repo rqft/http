@@ -32,11 +32,9 @@ export class Endpoint<T extends string = any> {
   public params(pathname: string): Collection<UrlParams<T>[number], string> {
     const output = new Collection<UrlParams<T>[number], string>();
     const source: Array<string> = clear(this.path.split("/"), "");
-    console.log("s", source);
     const target: Array<string> = clear(pathname.split("/"), "");
-    console.log("t", target);
 
-    if (source.length !== target.length) {
+    if (source.length < target.length) {
       return output;
     }
 
@@ -59,7 +57,7 @@ export class Endpoint<T extends string = any> {
         continue;
       }
 
-      return new Collection();
+      break;
     }
 
     return output;

@@ -92,7 +92,7 @@ class Client {
             });
             req.on("end", () => {
                 const output = new output_1.Output(res);
-                const path = req.url;
+                const path = input.url.pathname;
                 if (path) {
                     console.log(path);
                     const endpoint = endpoints.find((endpoint) => endpoint.match(path));
