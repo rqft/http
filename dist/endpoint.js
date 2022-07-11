@@ -18,18 +18,25 @@ class Endpoint {
         console.log("s", source);
         const target = (0, tools_1.clear)(pathname.split("/"), "");
         console.log("t", target);
+        if (source.length !== target.length) {
+            return output;
+        }
         for (let i = 0; i < source.length; i++) {
             const named = source[i].match(/^{(\w+)}$/);
+            if (source[i]?.toLowerCase() === target[i]?.toLowerCase()) {
+                continue;
+            }
             if (named) {
                 output.set(named[1], target[i] || "");
+                continue;
             }
-            const existingGlobals = output.filter((_, key) => key.startsWith("*"));
+            let times = 0;
             if (source[i] === "*") {
-                output.set("*".repeat(existingGlobals.size), target[i] || "");
+                times++;
+                output.set(times + "*", target[i] || "");
+                continue;
             }
-            if (source[i]?.toLowerCase() === target[i]?.toLowerCase()) {
-                output.set(source[i], target[i] || "");
-            }
+            return new julian_utils_1.BaseCollection();
         }
         return output;
     }

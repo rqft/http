@@ -36,22 +36,30 @@ export class Endpoint<T extends string = any> {
     const target: Array<string> = clear(pathname.split("/"), "");
     console.log("t", target);
 
+    if (source.length !== target.length) {
+      return output;
+    }
+
     for (let i = 0; i < source.length; i++) {
       const named = source[i]!.match(/^{(\w+)}$/);
+      if (source[i]?.toLowerCase() === target[i]?.toLowerCase()) {
+        // output should only have variable params
+        continue;
+      }
+
       if (named) {
         output.set(named[1]! as UrlParams<T>[number], target[i] || "");
+        continue;
       }
 
-      const existingGlobals = output.filter((_, key) =>
-        (key as string).startsWith("*")
-      );
+      let times = 0;
       if (source[i] === "*") {
-        output.set("*".repeat(existingGlobals.size) as any, target[i] || "");
+        times++;
+        output.set(times + "*", target[i] || "");
+        continue;
       }
 
-      if (source[i]?.toLowerCase() === target[i]?.toLowerCase()) {
-        output.set(source[i] as any, target[i] || "");
-      }
+      return new Collection();
     }
 
     return output;
