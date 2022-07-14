@@ -1,21 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Endpoints = void 0;
+exports.Endpoints = exports.EndpointCollection = void 0;
 const julian_utils_1 = require("julian-utils");
 const constants_1 = require("../constants");
+class EndpointCollection extends julian_utils_1.BaseCollection {
+}
+exports.EndpointCollection = EndpointCollection;
 class Endpoints {
-    [constants_1.HTTPVerbs.GET] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.POST] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.PUT] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.DELETE] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.PATCH] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.HEAD] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.OPTIONS] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.CONNECT] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.TRACE] = new julian_utils_1.BaseCollection();
-    [constants_1.HTTPVerbs.ALL] = new julian_utils_1.BaseCollection();
+    [constants_1.HTTPVerbs.GET] = new EndpointCollection();
+    [constants_1.HTTPVerbs.POST] = new EndpointCollection();
+    [constants_1.HTTPVerbs.PUT] = new EndpointCollection();
+    [constants_1.HTTPVerbs.DELETE] = new EndpointCollection();
+    [constants_1.HTTPVerbs.PATCH] = new EndpointCollection();
+    [constants_1.HTTPVerbs.HEAD] = new EndpointCollection();
+    [constants_1.HTTPVerbs.OPTIONS] = new EndpointCollection();
+    [constants_1.HTTPVerbs.CONNECT] = new EndpointCollection();
+    [constants_1.HTTPVerbs.TRACE] = new EndpointCollection();
+    [constants_1.HTTPVerbs.ALL] = new EndpointCollection();
+    [constants_1.HTTPVerbs.COPY] = new EndpointCollection();
+    [constants_1.HTTPVerbs.LINK] = new EndpointCollection();
+    [constants_1.HTTPVerbs.UNLINK] = new EndpointCollection();
+    [constants_1.HTTPVerbs.PURGE] = new EndpointCollection();
+    [constants_1.HTTPVerbs.LOCK] = new EndpointCollection();
+    [constants_1.HTTPVerbs.UNLOCK] = new EndpointCollection();
+    [constants_1.HTTPVerbs.PROPFIND] = new EndpointCollection();
+    [constants_1.HTTPVerbs.VIEW] = new EndpointCollection();
     get any() {
-        const total = new julian_utils_1.BaseCollection();
+        const total = new EndpointCollection();
         for (const verb in this) {
             if (this.hasOwnProperty(verb) &&
                 Object.values(constants_1.HTTPVerbs).includes(verb)) {

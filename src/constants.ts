@@ -1,4 +1,5 @@
 export enum HTTPVerbs {
+  // standard HTTP verbs
   GET = "GET",
   POST = "POST",
   PUT = "PUT",
@@ -8,6 +9,18 @@ export enum HTTPVerbs {
   OPTIONS = "OPTIONS",
   CONNECT = "CONNECT",
   TRACE = "TRACE",
+
+  // non-standard HTTP verbs
+  COPY = "COPY",
+  LINK = "LINK",
+  UNLINK = "UNLINK",
+  PURGE = "PURGE",
+  LOCK = "LOCK",
+  UNLOCK = "UNLOCK",
+  PROPFIND = "PROPFIND",
+  VIEW = "VIEW",
+
+  // custom verb for total matches
   ALL = "*",
 }
 
@@ -75,6 +88,73 @@ export enum StatusCodes {
   USE_PROXY = 305,
   VARIANT_ALSO_NEGOTIATES = 506,
 }
+
+export const StatusCodesText = {
+  [StatusCodes.ACCEPTED]: "Accepted",
+  [StatusCodes.ALREADY_REPORTED]: "Already Reported",
+  [StatusCodes.BAD_GATEWAY]: "Bad Gateway",
+  [StatusCodes.BAD_REQUEST]: "Bad Request",
+  [StatusCodes.BANDWIDTH_LIMIT_EXCEEDED]: "Bandwidth Limit Exceeded",
+  [StatusCodes.CONFLICT]: "Conflict",
+  [StatusCodes.CONTINUE]: "Continue",
+  [StatusCodes.CREATED]: "Created",
+  [StatusCodes.EXPECTATION_FAILED]: "Expectation Failed",
+  [StatusCodes.FAILED_DEPENDENCY]: "Failed Dependency",
+  [StatusCodes.FORBIDDEN]: "Forbidden",
+  [StatusCodes.FOUND]: "Found",
+  [StatusCodes.GATEWAY_TIMEOUT]: "Gateway Timeout",
+  [StatusCodes.GONE]: "Gone",
+  [StatusCodes.HTTP_VERSION_NOT_SUPPORTED]: "HTTP Version Not Supported",
+  [StatusCodes.IM_A_TEAPOT]: "I'm a teapot",
+  [StatusCodes.IM_USED]: "IM Used",
+  [StatusCodes.INSUFFICIENT_STORAGE]: "Insufficient Storage",
+  [StatusCodes.INTERNAL_SERVER_ERROR]: "Internal Server Error",
+  [StatusCodes.LENGTH_REQUIRED]: "Length Required",
+  [StatusCodes.LOCKED]: "Locked",
+  [StatusCodes.LOOP_DETECTED]: "Loop Detected",
+  [StatusCodes.METHOD_NOT_ALLOWED]: "Method Not Allowed",
+  [StatusCodes.MISDIRECTED_REQUEST]: "Misdirected Request",
+  [StatusCodes.MOVED_PERMANENTLY]: "Moved Permanently",
+  [StatusCodes.MULTIPLE_CHOICES]: "Multiple Choices",
+  [StatusCodes.MULTI_STATUS]: "Multi-Status",
+  [StatusCodes.NETWORK_AUTHENTICATION_REQUIRED]:
+    "Network Authentication Required",
+  [StatusCodes.NON_AUTHORITATIVE_INFORMATION]: "Non-Authoritative Information",
+  [StatusCodes.NOT_ACCEPTABLE]: "Not Acceptable",
+  [StatusCodes.NOT_EXTENDED]: "Not Extended",
+  [StatusCodes.NOT_FOUND]: "Not Found",
+  [StatusCodes.NOT_IMPLEMENTED]: "Not Implemented",
+  [StatusCodes.NOT_MODIFIED]: "Not Modified",
+  [StatusCodes.NO_CONTENT]: "No Content",
+  [StatusCodes.OK]: "OK",
+  [StatusCodes.PARTIAL_CONTENT]: "Partial Content",
+  [StatusCodes.PAYLOAD_TOO_LARGE]: "Payload Too Large",
+  [StatusCodes.PAYMENT_REQUIRED]: "Payment Required",
+  [StatusCodes.PERMANENT_REDIRECT]: "Permanent Redirect",
+  [StatusCodes.PRECONDITION_FAILED]: "Precondition Failed",
+  [StatusCodes.PRECONDITION_REQUIRED]: "Precondition Required",
+  [StatusCodes.PROCESSING]: "Processing",
+  [StatusCodes.PROXY_AUTHENTICATION_REQUIRED]: "Proxy Authentication Required",
+  [StatusCodes.RANGE_NOT_SATISFIABLE]: "Range Not Satisfiable",
+  [StatusCodes.REQUEST_HEADER_FIELDS_TOO_LARGE]:
+    "Request Header Fields Too Large",
+  [StatusCodes.REQUEST_TIMEOUT]: "Request Timeout",
+  [StatusCodes.RESET_CONTENT]: "Reset Content",
+  [StatusCodes.SEE_OTHER]: "See Other",
+  [StatusCodes.SERVICE_UNAVAILABLE]: "Service Unavailable",
+  [StatusCodes.SWITCHING_PROTOCOLS]: "Switching Protocols",
+  [StatusCodes.TEMPORARY_REDIRECT]: "Temporary Redirect",
+  [StatusCodes.TOO_MANY_REQUESTS]: "Too Many Requests",
+  [StatusCodes.UNAUTHORIZED]: "Unauthorized",
+  [StatusCodes.UNAVAILABLE_FOR_LEGAL_REASONS]: "Unavailable For Legal Reasons",
+  [StatusCodes.UNORDERED_COLLECTION]: "Unordered Collection",
+  [StatusCodes.UNPROCESSABLE_ENTITY]: "Unprocessable Entity",
+  [StatusCodes.UNSUPPORTED_MEDIA_TYPE]: "Unsupported Media Type",
+  [StatusCodes.UPGRADE_REQUIRED]: "Upgrade Required",
+  [StatusCodes.URI_TOO_LONG]: "URI Too Long",
+  [StatusCodes.USE_PROXY]: "Use Proxy",
+  [StatusCodes.VARIANT_ALSO_NEGOTIATES]: "Variant Also Negotiates",
+};
 
 export enum ContentTypes {
   APPLICATION_JSON = "application/json",
@@ -169,4 +249,9 @@ export enum HTTPHeaders {
   VIA = "via",
   WARNING = "warning",
   WWW_AUTHENTICATE = "www-authenticate",
+}
+
+export enum Module {
+  HTTP = "http",
+  HTTPS = "https",
 }

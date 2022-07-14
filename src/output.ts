@@ -26,7 +26,8 @@ export class Output {
     if (!this.headers.get("content-type")) {
       this.setHeader("content-type", this.static.identify(data));
     }
-    return this.data.end(this.static.parse(data));
+    this.data.end(this.static.parse(data));
+    return this;
   }
 
   get headers(): Collection<keyof Headers, HeaderValue | undefined> {

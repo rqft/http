@@ -11,19 +11,19 @@ import {
   UrlParams,
 } from "./types";
 
-export interface InputOptions<T extends string> {
+export interface InputOptions<T extends string, S extends boolean = true> {
   data: IncomingMessage;
-  endpoint?: Endpoint<T>;
-  client: Client;
+  endpoint?: Endpoint<T, S>;
+  client: Client<S>;
   body?: Array<Chunk>;
 }
 
-export class Input<T extends string = string> {
+export class Input<T extends string = string, S extends boolean = true> {
   public data: IncomingMessage;
-  public client: Client;
-  public endpoint!: Endpoint<T>;
+  public client: Client<S>;
+  public endpoint!: Endpoint<T, S>;
   public bodyParts: Array<Chunk> = [];
-  constructor(data: InputOptions<T>) {
+  constructor(data: InputOptions<T, S>) {
     this.data = data.data;
     this.client = data.client;
     this.endpoint = data.endpoint!;

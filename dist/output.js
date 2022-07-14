@@ -22,7 +22,8 @@ class Output {
         if (!this.headers.get("content-type")) {
             this.setHeader("content-type", this.static.identify(data));
         }
-        return this.data.end(this.static.parse(data));
+        this.data.end(this.static.parse(data));
+        return this;
     }
     get headers() {
         return new julian_utils_1.BaseCollection(Object.entries(this.data.getHeaders()));

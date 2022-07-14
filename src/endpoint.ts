@@ -6,23 +6,23 @@ import { Output } from "./output";
 import { clear } from "./tools";
 import { EndpointString, UrlParams } from "./types";
 
-export interface EndpointOptions<T extends string> {
+export interface EndpointOptions<T extends string, S extends boolean = true> {
   method: HTTPVerbs;
   handler: (
-    input: Input<T>,
+    input: Input<T, S>,
     output: Output,
-    endpoint: Endpoint<T>,
-    client: Client
+    endpoint: Endpoint<T, S>,
+    client: Client<S>
   ) => any;
 }
 
-export class Endpoint<T extends string = any> {
+export class Endpoint<T extends string = any, S extends boolean = true> {
   public path: T;
   public method: HTTPVerbs;
-  public handler: EndpointOptions<T>["handler"];
+  public handler: EndpointOptions<T, S>["handler"];
   constructor(
     path: [UrlParams<T>] extends [never] ? never : T,
-    options: EndpointOptions<T>
+    options: EndpointOptions<T, S>
   ) {
     this.path = path;
     this.method = options.method;

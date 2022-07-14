@@ -1,5 +1,3 @@
-import { Server } from "http";
-import { ServerOptions } from "https";
 import { Chunk } from "./chunk";
 import { Endpoints } from "./collections/endpoints";
 import { HTTPVerbs } from "./constants";
@@ -9,37 +7,47 @@ import { Output } from "./output";
 import { sleep } from "./tools";
 import { Arguments, EndpointString } from "./types";
 
-export interface ClientOptions {
+export interface ClientOptions<S extends boolean = true> {
+  secure?: S;
   port: number;
   host: string;
-  server: ServerOptions | Server;
+  server: S extends true
+    ? import("https").Server | import("https").ServerOptions
+    : import("http").Server | import("http").ServerOptions;
   capture: EndpointOptions<string>["handler"];
   middleware: Array<
     <T extends string = string>(
-      input: Input<T>,
+      input: Input<T, S>,
       output: Output,
       next: () => void,
-      endpoint: Endpoint<T>,
-      client: Client
+      endpoint: Endpoint<T, S>,
+      client: Client<S>
     ) => any
   >;
 }
 
-export class Client {
+import * as http from "http";
+import * as https from "https";
+
+export class Client<S extends boolean = true> {
+  public secure: S = true as S;
   public port: number;
   public host: string;
-  public http: Server;
-  public capture?: ClientOptions["capture"];
-  public middleware: ClientOptions["middleware"];
+  public http: S extends true ? import("https").Server : import("http").Server;
+  public capture?: ClientOptions<S>["capture"];
+  public middleware: ClientOptions<S>["middleware"];
 
-  public endpoints = new Endpoints();
-  constructor(options?: Partial<ClientOptions>) {
+  private serverClass = this.secure ? https.Server : http.Server;
+
+  public endpoints = new Endpoints<S>();
+  constructor(options?: Partial<ClientOptions<S>>) {
+    this.secure = options?.secure ?? (true as any);
     this.port = options?.port || 3000;
     this.host = options?.host || "localhost";
     this.http =
-      options?.server instanceof Server
+      options?.server instanceof this.serverClass
         ? options.server
-        : new Server(options?.server || {});
+        : (new this.serverClass(options?.server || ({} as any)) as any);
     this.capture = options?.capture;
     this.middleware = options?.middleware || [];
   }
@@ -51,7 +59,7 @@ export class Client {
     return this;
   }
 
-  public use(...middleware: ClientOptions["middleware"]) {
+  public use(...middleware: ClientOptions<S>["middleware"]) {
     this.middleware.push(...middleware);
     return this;
   }
@@ -104,6 +112,14 @@ export class Client {
   public post = this.buildMethod(HTTPVerbs.POST);
   public put = this.buildMethod(HTTPVerbs.PUT);
   public trace = this.buildMethod(HTTPVerbs.TRACE);
+  public copy = this.buildMethod(HTTPVerbs.COPY);
+  public link = this.buildMethod(HTTPVerbs.LINK);
+  public unlink = this.buildMethod(HTTPVerbs.UNLINK);
+  public purge = this.buildMethod(HTTPVerbs.PURGE);
+  public lock = this.buildMethod(HTTPVerbs.LOCK);
+  public unlock = this.buildMethod(HTTPVerbs.UNLOCK);
+  public propfind = this.buildMethod(HTTPVerbs.PROPFIND);
+  public view = this.buildMethod(HTTPVerbs.VIEW);
 
   public run(listen?: Arguments<this["listen"]>[0]) {
     this.initialize();
@@ -119,7 +135,10 @@ export class Client {
     const endpoints = this.endpoints.any;
 
     this.http.on("request", (req, res) => {
-      let input: Input<string> = new Input<string>({ client: this, data: req });
+      let input: Input<string, S> = new Input<string, S>({
+        client: this,
+        data: req,
+      });
 
       req.on("data", (data) => {
         const chunk = new Chunk(data);

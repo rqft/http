@@ -1,20 +1,33 @@
 import { BaseCollection as Collection } from "julian-utils";
 import { HTTPVerbs } from "../constants";
 import { Endpoint } from "../endpoint";
+export class EndpointCollection<S extends boolean> extends Collection<
+  string,
+  Endpoint<string, S>
+> {}
+export class Endpoints<S extends boolean> {
+  [HTTPVerbs.GET] = new EndpointCollection<S>();
+  [HTTPVerbs.POST] = new EndpointCollection<S>();
+  [HTTPVerbs.PUT] = new EndpointCollection<S>();
+  [HTTPVerbs.DELETE] = new EndpointCollection<S>();
+  [HTTPVerbs.PATCH] = new EndpointCollection<S>();
+  [HTTPVerbs.HEAD] = new EndpointCollection<S>();
+  [HTTPVerbs.OPTIONS] = new EndpointCollection<S>();
+  [HTTPVerbs.CONNECT] = new EndpointCollection<S>();
+  [HTTPVerbs.TRACE] = new EndpointCollection<S>();
+  [HTTPVerbs.ALL] = new EndpointCollection<S>();
 
-export class Endpoints {
-  [HTTPVerbs.GET] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.POST] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.PUT] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.DELETE] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.PATCH] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.HEAD] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.OPTIONS] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.CONNECT] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.TRACE] = new Collection<string, Endpoint<string>>();
-  [HTTPVerbs.ALL] = new Collection<string, Endpoint<string>>();
+  [HTTPVerbs.COPY] = new EndpointCollection<S>();
+  [HTTPVerbs.LINK] = new EndpointCollection<S>();
+  [HTTPVerbs.UNLINK] = new EndpointCollection<S>();
+  [HTTPVerbs.PURGE] = new EndpointCollection<S>();
+  [HTTPVerbs.LOCK] = new EndpointCollection<S>();
+  [HTTPVerbs.UNLOCK] = new EndpointCollection<S>();
+  [HTTPVerbs.PROPFIND] = new EndpointCollection<S>();
+  [HTTPVerbs.VIEW] = new EndpointCollection<S>();
+
   public get any() {
-    const total = new Collection<string, Endpoint<string>>();
+    const total = new EndpointCollection<S>();
     for (const verb in this) {
       if (
         this.hasOwnProperty(verb) &&

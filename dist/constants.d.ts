@@ -8,6 +8,14 @@ export declare enum HTTPVerbs {
     OPTIONS = "OPTIONS",
     CONNECT = "CONNECT",
     TRACE = "TRACE",
+    COPY = "COPY",
+    LINK = "LINK",
+    UNLINK = "UNLINK",
+    PURGE = "PURGE",
+    LOCK = "LOCK",
+    UNLOCK = "UNLOCK",
+    PROPFIND = "PROPFIND",
+    VIEW = "VIEW",
     ALL = "*"
 }
 export declare enum StatusCodes {
@@ -74,6 +82,70 @@ export declare enum StatusCodes {
     USE_PROXY = 305,
     VARIANT_ALSO_NEGOTIATES = 506
 }
+export declare const StatusCodesText: {
+    202: string;
+    208: string;
+    502: string;
+    400: string;
+    509: string;
+    409: string;
+    100: string;
+    201: string;
+    417: string;
+    424: string;
+    403: string;
+    302: string;
+    504: string;
+    410: string;
+    505: string;
+    418: string;
+    226: string;
+    507: string;
+    500: string;
+    411: string;
+    423: string;
+    508: string;
+    405: string;
+    421: string;
+    301: string;
+    300: string;
+    207: string;
+    511: string;
+    203: string;
+    406: string;
+    510: string;
+    404: string;
+    501: string;
+    304: string;
+    204: string;
+    200: string;
+    206: string;
+    413: string;
+    402: string;
+    308: string;
+    412: string;
+    428: string;
+    102: string;
+    407: string;
+    416: string;
+    431: string;
+    408: string;
+    205: string;
+    303: string;
+    503: string;
+    101: string;
+    307: string;
+    429: string;
+    401: string;
+    451: string;
+    425: string;
+    422: string;
+    415: string;
+    426: string;
+    414: string;
+    305: string;
+    506: string;
+};
 export declare enum ContentTypes {
     APPLICATION_JSON = "application/json",
     APPLICATION_XML = "application/xml",
@@ -166,4 +238,8 @@ export declare enum HTTPHeaders {
     VIA = "via",
     WARNING = "warning",
     WWW_AUTHENTICATE = "www-authenticate"
+}
+export declare enum Module {
+    HTTP = "http",
+    HTTPS = "https"
 }

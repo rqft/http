@@ -11,7 +11,7 @@ export declare class Output {
     setStatus(code: StatusCodes): this;
     write(data: any): this;
     i: number;
-    send(data: any): ServerResponse;
+    send(data: any): this;
     get headers(): Collection<keyof Headers, HeaderValue | undefined>;
     setHeader(key: keyof Headers, value: HeaderValue): this;
     static parse(data?: any): string | Buffer | Uint8Array;

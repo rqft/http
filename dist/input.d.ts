@@ -6,18 +6,18 @@ import { Client } from "./client";
 import { HTTPHeaders, HTTPVerbs } from "./constants";
 import { Endpoint } from "./endpoint";
 import { CustomHTTPHeaders, HeaderValue, UrlParams } from "./types";
-export interface InputOptions<T extends string> {
+export interface InputOptions<T extends string, S extends boolean = true> {
     data: IncomingMessage;
-    endpoint?: Endpoint<T>;
-    client: Client;
+    endpoint?: Endpoint<T, S>;
+    client: Client<S>;
     body?: Array<Chunk>;
 }
-export declare class Input<T extends string = string> {
+export declare class Input<T extends string = string, S extends boolean = true> {
     data: IncomingMessage;
-    client: Client;
-    endpoint: Endpoint<T>;
+    client: Client<S>;
+    endpoint: Endpoint<T, S>;
     bodyParts: Array<Chunk>;
-    constructor(data: InputOptions<T>);
+    constructor(data: InputOptions<T, S>);
     get body(): string;
     get headers(): Collection<HTTPHeaders | CustomHTTPHeaders | `${HTTPHeaders}`, Exclude<HeaderValue, number> | undefined>;
     get url(): URL;
