@@ -1,33 +1,30 @@
 import { BaseCollection as Collection } from "julian-utils";
 import { HTTPVerbs } from "../constants";
 import { Endpoint } from "../endpoint";
-export class EndpointCollection<S extends boolean> extends Collection<
-  string,
-  Endpoint<string, S>
-> {}
-export class Endpoints<S extends boolean> {
-  [HTTPVerbs.GET] = new EndpointCollection<S>();
-  [HTTPVerbs.POST] = new EndpointCollection<S>();
-  [HTTPVerbs.PUT] = new EndpointCollection<S>();
-  [HTTPVerbs.DELETE] = new EndpointCollection<S>();
-  [HTTPVerbs.PATCH] = new EndpointCollection<S>();
-  [HTTPVerbs.HEAD] = new EndpointCollection<S>();
-  [HTTPVerbs.OPTIONS] = new EndpointCollection<S>();
-  [HTTPVerbs.CONNECT] = new EndpointCollection<S>();
-  [HTTPVerbs.TRACE] = new EndpointCollection<S>();
-  [HTTPVerbs.ALL] = new EndpointCollection<S>();
+export class EndpointCollection extends Collection<string, Endpoint<string>> {}
+export class Endpoints {
+  [HTTPVerbs.GET] = new EndpointCollection();
+  [HTTPVerbs.POST] = new EndpointCollection();
+  [HTTPVerbs.PUT] = new EndpointCollection();
+  [HTTPVerbs.DELETE] = new EndpointCollection();
+  [HTTPVerbs.PATCH] = new EndpointCollection();
+  [HTTPVerbs.HEAD] = new EndpointCollection();
+  [HTTPVerbs.OPTIONS] = new EndpointCollection();
+  [HTTPVerbs.CONNECT] = new EndpointCollection();
+  [HTTPVerbs.TRACE] = new EndpointCollection();
+  [HTTPVerbs.ALL] = new EndpointCollection();
 
-  [HTTPVerbs.COPY] = new EndpointCollection<S>();
-  [HTTPVerbs.LINK] = new EndpointCollection<S>();
-  [HTTPVerbs.UNLINK] = new EndpointCollection<S>();
-  [HTTPVerbs.PURGE] = new EndpointCollection<S>();
-  [HTTPVerbs.LOCK] = new EndpointCollection<S>();
-  [HTTPVerbs.UNLOCK] = new EndpointCollection<S>();
-  [HTTPVerbs.PROPFIND] = new EndpointCollection<S>();
-  [HTTPVerbs.VIEW] = new EndpointCollection<S>();
+  [HTTPVerbs.COPY] = new EndpointCollection();
+  [HTTPVerbs.LINK] = new EndpointCollection();
+  [HTTPVerbs.UNLINK] = new EndpointCollection();
+  [HTTPVerbs.PURGE] = new EndpointCollection();
+  [HTTPVerbs.LOCK] = new EndpointCollection();
+  [HTTPVerbs.UNLOCK] = new EndpointCollection();
+  [HTTPVerbs.PROPFIND] = new EndpointCollection();
+  [HTTPVerbs.VIEW] = new EndpointCollection();
 
   public get any() {
-    const total = new EndpointCollection<S>();
+    const total = new EndpointCollection();
     for (const verb in this) {
       if (
         this.hasOwnProperty(verb) &&
