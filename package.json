@@ -1,6 +1,6 @@
 {
-  "name": "kevin-http",
-  "version": "1.0.14",
+  "name": "@rqft/http",
+  "version": "1.0.0",
   "description": "ts server library",
   "main": "dist/index.js",
   "scripts": {
@@ -20,6 +20,6 @@
     "@types/node": "^18.0.0"
   },
   "dependencies": {
-    "julian-utils": "^1.0.1"
+    "@rqft/utils": "^1.0.0"
   }
 }
