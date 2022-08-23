@@ -1,7 +1,7 @@
 /// <reference types="node" />
 /// <reference types="node" />
+import { BaseCollection as Collection } from "@rqft/utils";
 import { ServerResponse } from "http";
-import { BaseCollection as Collection } from "julian-utils";
 import { ContentTypes, StatusCodes } from "./constants";
 import { Headers, HeaderValue } from "./types";
 export declare class Output {

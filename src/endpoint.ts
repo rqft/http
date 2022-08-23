@@ -1,4 +1,4 @@
-import { BaseCollection as Collection } from "julian-utils";
+import { BaseCollection as Collection } from "@rqft/utils";
 import { Client } from "./client";
 import { HTTPVerbs } from "./constants";
 import { Input } from "./input";

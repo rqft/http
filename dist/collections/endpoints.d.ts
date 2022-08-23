@@ -1,4 +1,4 @@
-import { BaseCollection as Collection } from "julian-utils";
+import { BaseCollection as Collection } from "@rqft/utils";
 import { HTTPVerbs } from "../constants";
 import { Endpoint } from "../endpoint";
 export declare class EndpointCollection extends Collection<string, Endpoint<string>> {

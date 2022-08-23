@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Endpoints = exports.EndpointCollection = void 0;
-const julian_utils_1 = require("julian-utils");
+const utils_1 = require("@rqft/utils");
 const constants_1 = require("../constants");
-class EndpointCollection extends julian_utils_1.BaseCollection {
+class EndpointCollection extends utils_1.BaseCollection {
 }
 exports.EndpointCollection = EndpointCollection;
 class Endpoints {

@@ -1,5 +1,5 @@
+import { BaseCollection as Collection } from "@rqft/utils";
 import { IncomingMessage } from "http";
-import { BaseCollection as Collection } from "julian-utils";
 import { Chunk } from "./chunk";
 import { Client } from "./client";
 import { HTTPHeaders, HTTPVerbs } from "./constants";
@@ -8,7 +8,7 @@ import {
   CustomHTTPHeaders,
   HeaderValue,
   IncomingHeadersEntries,
-  UrlParams,
+  UrlParams
 } from "./types";
 
 export interface InputOptions<T extends string> {

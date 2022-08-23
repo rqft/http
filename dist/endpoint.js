@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Endpoint = void 0;
-const julian_utils_1 = require("julian-utils");
+const utils_1 = require("@rqft/utils");
 const tools_1 = require("./tools");
 class Endpoint {
     path;
@@ -13,7 +13,7 @@ class Endpoint {
         this.handler = options.handler;
     }
     params(pathname) {
-        const output = new julian_utils_1.BaseCollection();
+        const output = new utils_1.BaseCollection();
         const source = (0, tools_1.clear)(this.path.split("/"), "");
         const target = (0, tools_1.clear)(pathname.split("/"), "");
         if (source.length < target.length) {
